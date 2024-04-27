@@ -5,11 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "3000";
 
-var dbHost = Environment.GetEnvironmentVariable("PORT") ?? "localhost";
-var dbPort = Environment.GetEnvironmentVariable("PORT") ?? "5432";
-var dbName = Environment.GetEnvironmentVariable("PORT") ?? "multipresence";
-var dbUser = Environment.GetEnvironmentVariable("PORT") ?? "postgres";
-var dbPassword = Environment.GetEnvironmentVariable("PORT") ?? "123456";
+var dbHost = Environment.GetEnvironmentVariable("PGHOST") ?? "localhost";
+var dbPort = Environment.GetEnvironmentVariable("PGPORT") ?? "5432";
+var dbName = Environment.GetEnvironmentVariable("PGDATABASE") ?? "multipresence";
+var dbUser = Environment.GetEnvironmentVariable("PGUSER") ?? "postgres";
+var dbPassword = Environment.GetEnvironmentVariable("PGPASSWORD") ?? "123456";
 
 string connectionString = $"Host={dbHost};Port={dbPort};Database = {dbName};User Id = {dbUser};Password = {dbPassword};";
 
