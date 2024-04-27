@@ -3,18 +3,29 @@ using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "3000";
+
+var dbHost = Environment.GetEnvironmentVariable("PORT") ?? "localhost";
+var dbPort = Environment.GetEnvironmentVariable("PORT") ?? "5432";
+var dbName = Environment.GetEnvironmentVariable("PORT") ?? "multipresence";
+var dbUser = Environment.GetEnvironmentVariable("PORT") ?? "postgres";
+var dbPassword = Environment.GetEnvironmentVariable("PORT") ?? "123456";
+
+string connectionString = $"Host={dbHost};Port={dbPort};Database = {dbName};User Id = {dbUser};Password = {dbPassword};";
+
+
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.WebHost.UseUrls($"https://*:{port}/;https://localhost:{port}/");
 
 var app = builder.Build();
 
 app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
-const string connectionString = "Host=localhost;Port=5432;Database = multipresence;User Id = postgres;Password = 123456;";
 using NpgsqlConnection connection = new NpgsqlConnection(connectionString);
 connection.Open();
 
@@ -280,7 +291,11 @@ app.MapGet("/friends/{playerName}/{otherName}", async (string playerName, string
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
+    });
 }
 
 app.UseHttpsRedirection();
