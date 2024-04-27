@@ -4,6 +4,7 @@ using Npgsql;
 var builder = WebApplication.CreateBuilder(args);
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "3000";
+Console.WriteLine("Tung Debug: Port = " + port);
 
 var dbHost = Environment.GetEnvironmentVariable("PGHOST") ?? "localhost";
 var dbPort = Environment.GetEnvironmentVariable("PGPORT") ?? "5432";
@@ -296,18 +297,6 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
         options.RoutePrefix = string.Empty;
     });
-}
-
-if (builder.Environment.IsProduction())
-{
-    var portVar = Environment.GetEnvironmentVariable("PORT");
-    if (portVar is { Length: > 0 } && int.TryParse(portVar, out var port2))
-    {
-        builder.WebHost.ConfigureKestrel(options =>
-        {
-            options.ListenAnyIP(port2);
-        });
-    }
 }
 
 app.UseHttpsRedirection();
