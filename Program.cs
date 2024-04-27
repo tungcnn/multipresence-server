@@ -298,6 +298,18 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+if (builder.Environment.IsProduction())
+{
+    var portVar = Environment.GetEnvironmentVariable("PORT");
+    if (portVar is { Length: > 0 } && int.TryParse(portVar, out var port2))
+    {
+        builder.WebHost.ConfigureKestrel(options =>
+        {
+            options.ListenAnyIP(port2);
+        });
+    }
+}
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
